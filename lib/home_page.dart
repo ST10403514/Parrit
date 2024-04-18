@@ -74,18 +74,36 @@ class _ParritHomePageState extends State<ParritHomePage> {
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // Show the custom dialog for adding notifications
-          showCustomDialog(context, (List<String> addedNotifications) {
-            setState(() {
-              notifications.addAll(addedNotifications);
-            });
-          }); // Call the custom dialog function
-        },
-        backgroundColor: Colors.white,
-        foregroundColor: Colors.black,
-        child: const Icon(Icons.add),
+      floatingActionButton: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          FloatingActionButton(
+            onPressed: () {
+              // Show the custom dialog for adding notifications
+              showCustomDialog(context, (List<String> addedNotifications) {
+                setState(() {
+                  notifications.addAll(addedNotifications);
+                });
+              });
+            },
+            backgroundColor: Colors.white,
+            foregroundColor: Colors.black,
+            child: const Icon(Icons.add),
+          ),
+          const SizedBox(width: 10), // Add spacing between buttons
+          FloatingActionButton(
+            onPressed: () {
+              if (notifications.isNotEmpty) {
+                setState(() {
+                  notifications.removeLast();
+                });
+              }
+            },
+            backgroundColor: Colors.white,
+            foregroundColor: Colors.black,
+            child: const Icon(Icons.delete),
+          ),
+        ],
       ),
     );
   }

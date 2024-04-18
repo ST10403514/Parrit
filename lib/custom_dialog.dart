@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 
 class AddNotificationDialog extends StatefulWidget {
-  final Function(List<String>) onAddNotification;
+  final void Function(List<String>) onAddNotification;
 
-  const AddNotificationDialog({super.key, required this.onAddNotification});
+  const AddNotificationDialog({
+    super.key,
+    required this.onAddNotification,
+  });
 
   @override
   // ignore: library_private_types_in_public_api
@@ -11,7 +14,7 @@ class AddNotificationDialog extends StatefulWidget {
 }
 
 class _AddNotificationDialogState extends State<AddNotificationDialog> {
-  List<String> notificationInfo = ['']; // Initial entry
+  List<String> lines = ['']; // Initial entry
 
   @override
   Widget build(BuildContext context) {
@@ -30,14 +33,14 @@ class _AddNotificationDialogState extends State<AddNotificationDialog> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            for (int i = 0; i < notificationInfo.length; i++)
+            for (int i = 0; i < lines.length; i++)
               Row(
                 children: [
                   Expanded(
                     child: TextField(
                       onChanged: (value) {
                         setState(() {
-                          notificationInfo[i] = value;
+                          lines[i] = value;
                         });
                       },
                       decoration: const InputDecoration(
@@ -45,12 +48,12 @@ class _AddNotificationDialogState extends State<AddNotificationDialog> {
                       ),
                     ),
                   ),
-                  if (i == notificationInfo.length - 1) // Show "+" on last row
+                  if (i == lines.length - 1) // Show "+" on last row
                     IconButton(
                       icon: const Icon(Icons.add),
                       onPressed: () {
                         setState(() {
-                          notificationInfo.add('');
+                          lines.add('');
                         });
                       },
                     ),
@@ -77,7 +80,10 @@ class _AddNotificationDialogState extends State<AddNotificationDialog> {
             side: const BorderSide(color: Colors.black, width: 2),
           ),
           onPressed: () {
-            widget.onAddNotification(notificationInfo);
+            // Concatenate all lines into one string
+            String notification = lines.join('\n');
+            widget.onAddNotification(
+                [notification]); // Pass the notification as a list
             Navigator.of(context).pop(); // Close the dialog
           },
           child: const Text('Add'),
@@ -88,11 +94,16 @@ class _AddNotificationDialogState extends State<AddNotificationDialog> {
 }
 
 void showCustomDialog(
-    BuildContext context, Function(List<String>) addNotification) {
+    BuildContext context, Function(List<String>) addNotifications) {
   showDialog(
     context: context,
     builder: (BuildContext context) {
-      return AddNotificationDialog(onAddNotification: addNotification);
+      return AddNotificationDialog(
+        onAddNotification: (List<String> notifications) {
+          addNotifications(
+              notifications); // Pass the notifications to the callback
+        },
+      );
     },
   );
 }
