@@ -65,8 +65,12 @@ class _ParritHomePageState extends State<ParritHomePage> {
               child: SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: notifications.map((notification) {
-                    return NotificationItem(notification: notification);
+                  children: notifications.asMap().entries.map((entry) {
+                    final index =
+                        entry.key + 0; // Adding 1 to make it 1-based index
+                    final notification = entry.value;
+                    return NotificationItem(
+                        index: index, notification: notification);
                   }).toList(),
                 ),
               ),
