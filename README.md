@@ -10,4 +10,4 @@ Parrit is a simple Flutter app for managing your notifications and to-do lists. 
 - Notifications are displayed in a clean and organized manner.
 
 ## To Come
-- display customizable notifications on your mobile phone 
+- display customizable notifications on your mobile phone "# Parrit" 
